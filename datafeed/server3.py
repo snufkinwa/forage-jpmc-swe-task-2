@@ -150,7 +150,7 @@ def order_book(orders, book, stock_name):
 
 def generate_csv():
     """ Generate a CSV of order history. """
-    with open('test.csv', 'wb') as f:
+    with open('test.csv', 'w', newline='') as f:
         writer = csv.writer(f)
         for t, stock, side, order, size in orders(market()):
             if t > MARKET_OPEN + SIM_LENGTH:
@@ -336,7 +336,8 @@ class App(object):
 # Main
 
 if __name__ == '__main__':
-    if not os.path.isfile('test.csv'):
-        print("No data found, generating...")
+    if not os.path.isfile('test.csv') or os.stat('test.csv').st_size == 0:
+        print("No data found or file is empty, generating...")
         generate_csv()
     run(App())
+
